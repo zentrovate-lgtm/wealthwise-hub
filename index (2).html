@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="UTQGuPrXke_Jns4WGwhE2bazbv3xWmZ-lNkOXsM4Py0" />
+<meta name="google-site-verification" content="nIUuXfYvh9TmV0bA6W6H5FzQbjw-f1zVUTLsJfVpnYA" />
+<title>WealthWise — Smart Money for Real Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dark: #8B6914;
+    --navy: #0D1B2A;
+    --navy-mid: #1A2E45;
+    --navy-soft: #243B55;
+    --cream: #FAF7F0;
+    --cream-dark: #F0EAD6;
+    --white: #FFFFFF;
+    --text-main: #0D1B2A;
+    --text-muted: #4A6080;
+    --text-light: #8AA0BB;
+    --accent-green: #2ECC8A;
+    --accent-red: #E05252;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 40px rgba(13,27,42,0.10);
+    --shadow-lg: 0 20px 60px rgba(13,27,42,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--text-main); line-height: 1.7; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; height: 70px;
+    background: rgba(13,27,42,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 22px; color: var(--white); display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+  .nav-logo span { color: var(--gold); }
+  .logo-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .nav-links { display: flex; gap: 6px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; padding: 7px 16px; border-radius: 40px; transition: all 0.2s; font-weight: 400; cursor: pointer; }
+  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+  .nav-links a.active { color: var(--navy); background: var(--gold); font-weight: 500; }
+  .nav-cta { background: var(--gold) !important; color: var(--navy) !important; font-weight: 500 !important; }
+  .nav-cta:hover { background: var(--gold-light) !important; }
+
+  .page { display: none; padding-top: 70px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { background: var(--navy); position: relative; overflow: hidden; padding: 100px 5% 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(201,168,76,0.12) 0%, transparent 70%); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 40px; margin-bottom: 28px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .hero-badge::before { content: '●'; color: var(--gold); font-size: 8px; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(34px, 4vw, 54px); color: var(--white); line-height: 1.15; margin-bottom: 24px; font-weight: 700; }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 17px; margin-bottom: 40px; max-width: 460px; line-height: 1.8; font-weight: 300; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), #A8861C); color: var(--navy); font-weight: 600; padding: 14px 30px; border-radius: 50px; border: none; cursor: pointer; font-size: 15px; font-family: var(--font-body); display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(201,168,76,0.4); }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.5); }
+  .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); padding: 14px 30px; border-radius: 50px; cursor: pointer; font-size: 15px; font-family: var(--font-body); display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px); position: relative; z-index: 1; }
+  .hero-card-title { color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+  .ticker-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .ticker-row:last-of-type { border-bottom: none; }
+  .ticker-name { color: var(--white); font-size: 14px; font-weight: 500; }
+  .ticker-sub { color: rgba(255,255,255,0.4); font-size: 11px; }
+  .ticker-val { font-family: var(--font-display); color: var(--white); font-size: 16px; }
+  .ticker-chg { font-size: 12px; padding: 3px 10px; border-radius: 20px; }
+  .chg-up { background: rgba(46,204,138,0.15); color: var(--accent-green); }
+  .chg-dn { background: rgba(224,82,82,0.15); color: var(--accent-red); }
+  .hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-top: 20px; }
+  .hero-stat { background: rgba(13,27,42,0.6); padding: 14px 10px; text-align: center; }
+  .hero-stat-num { font-family: var(--font-display); color: var(--gold); font-size: 20px; }
+  .hero-stat-lbl { color: rgba(255,255,255,0.4); font-size: 11px; margin-top: 2px; }
+
+  .trust-bar { background: var(--white); padding: 20px 5%; display: flex; align-items: center; justify-content: center; gap: 50px; border-bottom: 1px solid rgba(13,27,42,0.07); flex-wrap: wrap; }
+  .trust-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 13px; }
+
+  .section { padding: 80px 5%; }
+  .section-alt { background: var(--white); }
+  .section-dark { background: var(--navy); }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-dark); font-weight: 600; margin-bottom: 12px; }
+  .section-dark .section-label { color: var(--gold); }
+  .section-title { font-family: var(--font-display); font-size: clamp(26px, 3vw, 40px); font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+  .section-dark .section-title { color: var(--white); }
+  .section-sub { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.8; font-weight: 300; margin-bottom: 48px; }
+  .section-dark .section-sub { color: rgba(255,255,255,0.55); }
+
+  /* ARTICLES */
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .article-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; border: 1px solid rgba(13,27,42,0.06); }
+  .article-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .card-thumb { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 48px; }
+  .thumb-budget { background: linear-gradient(135deg, #1a2e45, #243b55); }
+  .thumb-invest { background: linear-gradient(135deg, #0d2137, #1a3a52); }
+  .thumb-earn   { background: linear-gradient(135deg, #1f1635, #2d2050); }
+  .thumb-save   { background: linear-gradient(135deg, #0d2a1f, #143d2c); }
+  .thumb-debt   { background: linear-gradient(135deg, #2a1515, #3d2020); }
+  .thumb-tax    { background: linear-gradient(135deg, #1a1a0d, #3d3a14); }
+  .card-body { padding: 20px 22px 22px; }
+  .card-tag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+  .tag-b { background: #E8F4FD; color: #1a5f8a; }
+  .tag-i { background: #EDF7F0; color: #1a7a45; }
+  .tag-e { background: #FDF0F8; color: #8a1a6a; }
+  .tag-s { background: #FDF6E8; color: #8a5a1a; }
+  .tag-d { background: #FDF0F0; color: #8a1a1a; }
+  .tag-t { background: #F0F0FD; color: #3a1a8a; }
+  .card-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; line-height: 1.35; margin-bottom: 10px; color: var(--text-main); }
+  .card-excerpt { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; font-weight: 300; }
+  .card-meta { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-light); }
+
+  /* FEATURED */
+  .featured-card { background: var(--navy); border-radius: 24px; padding: 48px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; margin-bottom: 40px; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+  .featured-card:hover { transform: translateY(-4px); }
+  .featured-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%); }
+  .featured-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .featured-label::before { content: '★'; }
+  .featured-card h2 { font-family: var(--font-display); font-size: 28px; color: var(--white); font-weight: 700; line-height: 1.25; margin-bottom: 14px; }
+  .featured-card p { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.7; font-weight: 300; }
+  .featured-num { font-family: var(--font-display); font-size: 90px; font-weight: 700; color: rgba(201,168,76,0.12); line-height: 1; white-space: nowrap; }
+
+  /* TIPS */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .tip-card { background: var(--cream); border: 1px solid rgba(201,168,76,0.2); border-radius: var(--radius); padding: 28px 24px; transition: border-color 0.2s, transform 0.2s; }
+  .tip-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .tip-num { font-family: var(--font-display); font-size: 34px; font-weight: 700; color: var(--gold); opacity: 0.4; line-height: 1; margin-bottom: 14px; }
+  .tip-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+  .tip-body { font-size: 13px; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+
+  /* CALCULATOR */
+  .calc-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .calc-box { background: var(--white); border-radius: 20px; padding: 36px; box-shadow: var(--shadow); }
+  .calc-box h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 28px; }
+  .calc-field { margin-bottom: 22px; }
+  .calc-field label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 10px; font-weight: 500; }
+  .calc-field label strong { color: var(--gold-dark); font-weight: 600; }
+  input[type=range] { width: 100%; height: 4px; background: var(--cream-dark); border-radius: 2px; outline: none; appearance: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 2px solid var(--white); box-shadow: 0 2px 8px rgba(201,168,76,0.4); }
+  .result-box { background: var(--navy); border-radius: 16px; padding: 28px; text-align: center; margin-top: 8px; }
+  .result-label { color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .result-num { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .result-sub { color: rgba(255,255,255,0.4); font-size: 13px; }
+  .calc-info { padding: 10px 0; }
+  .calc-info h3 { font-family: var(--font-display); font-size: 26px; color: var(--white); margin-bottom: 16px; }
+  .calc-info p { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.8; font-weight: 300; margin-bottom: 24px; }
+  .info-stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .info-stat-lbl { color: rgba(255,255,255,0.5); font-size: 13px; }
+  .info-stat-val { font-family: var(--font-display); color: var(--gold); font-size: 18px; font-weight: 600; }
+
+  /* NEWSLETTER */
+  .newsletter-wrap { background: linear-gradient(135deg, var(--navy-mid), var(--navy)); border: 1px solid rgba(201,168,76,0.2); border-radius: 24px; padding: 60px; text-align: center; position: relative; overflow: hidden; }
+  .newsletter-wrap::before { content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%); }
+  .newsletter-wrap h2 { font-family: var(--font-display); font-size: 32px; color: var(--white); margin-bottom: 12px; position: relative; }
+  .newsletter-wrap p { color: rgba(255,255,255,0.55); font-size: 16px; margin-bottom: 32px; font-weight: 300; position: relative; }
+  .email-form { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; position: relative; }
+  .email-form input { flex: 1; padding: 14px 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; color: var(--white); font-size: 14px; font-family: var(--font-body); outline: none; }
+  .email-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .email-form input:focus { border-color: var(--gold); }
+  .email-form button { background: var(--gold); color: var(--navy); border: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; font-weight: 600; font-family: var(--font-body); cursor: pointer; white-space: nowrap; }
+  .email-form button:hover { background: var(--gold-light); }
+
+  /* ABOUT */
+  .about-hero { background: var(--navy); padding: 80px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-hero h1 { font-family: var(--font-display); font-size: 42px; color: var(--white); font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
+  .about-hero h1 span { color: var(--gold); }
+  .about-hero p { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.8; font-weight: 300; }
+  .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .value-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 24px; }
+  .value-icon { font-size: 28px; margin-bottom: 12px; }
+  .value-title { color: var(--gold); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .value-text { color: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.6; font-weight: 300; }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 24px; }
+  .team-card { background: var(--white); border-radius: var(--radius); padding: 28px; text-align: center; box-shadow: var(--shadow); }
+  .team-avatar { width: 68px; height: 68px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--white); }
+  .team-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .team-role { font-size: 12px; color: var(--text-muted); }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: start; }
+  .contact-info h2 { font-family: var(--font-display); font-size: 32px; margin-bottom: 16px; line-height: 1.2; }
+  .contact-info p { color: var(--text-muted); font-size: 15px; line-height: 1.8; font-weight: 300; margin-bottom: 32px; }
+  .contact-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+  .contact-item-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .contact-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 2px; }
+  .contact-item-val { font-size: 14px; font-weight: 500; color: var(--text-main); }
+  .contact-form-box { background: var(--white); border-radius: 20px; padding: 40px; box-shadow: var(--shadow); }
+  .contact-form-box h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 24px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid rgba(13,27,42,0.1); border-radius: 10px; font-size: 14px; font-family: var(--font-body); color: var(--text-main); background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); background: var(--white); }
+  .form-group textarea { height: 120px; resize: none; }
+  .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--gold), #A8861C); color: var(--navy); border: none; border-radius: 50px; font-size: 15px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px; }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
+  /* ARTICLE DETAIL */
+  .article-detail-wrap { max-width: 720px; margin: 0 auto; padding: 60px 5%; }
+  .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-bottom: 32px; background: none; border: none; font-family: var(--font-body); transition: color 0.2s; }
+  .back-link:hover { color: var(--gold-dark); }
+  .article-detail-tag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .detail-h1 { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+  .detail-meta { display: flex; gap: 16px; color: var(--text-light); font-size: 13px; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(13,27,42,0.08); }
+  .article-body h3 { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin: 32px 0 12px; color: var(--navy); }
+  .article-body p { font-size: 16px; color: var(--text-muted); line-height: 1.85; margin-bottom: 18px; font-weight: 300; }
+  .article-body ul { padding-left: 20px; margin-bottom: 18px; }
+  .article-body li { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 8px; font-weight: 300; }
+  .article-highlight { background: var(--navy); border-left: 4px solid var(--gold); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 24px 0; }
+  .article-highlight p { color: rgba(255,255,255,0.75) !important; font-size: 15px !important; margin: 0 !important; }
+
+  /* FOOTER */
+  footer { background: var(--navy); color: rgba(255,255,255,0.5); padding: 60px 5% 30px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand p { font-size: 13px; line-height: 1.8; margin-top: 12px; font-weight: 300; }
+  .footer-col h4 { color: var(--white); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.45); text-decoration: none; font-size: 13px; margin-bottom: 10px; transition: color 0.2s; cursor: pointer; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+  .footer-social { display: flex; gap: 12px; }
+  .social-btn { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+  .social-btn:hover { background: rgba(201,168,76,0.2); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .fade-up { animation: fadeUp 0.6s ease both; }
+  .delay-2 { animation-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')"><div class="logo-icon">💰</div>Wealth<span>Wise</span></div>
+  <ul class="nav-links">
+    <li><a class="active" onclick="showPage('home',this)">Home</a></li>
+    <li><a onclick="showPage('articles',this)">Articles</a></li>
+    <li><a onclick="showPage('tools',this)">Tools</a></li>
+    <li><a onclick="showPage('about',this)">About</a></li>
+    <li><a class="nav-cta" onclick="showPage('contact',this)">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <section class="hero">
+    <div class="fade-up">
+      <div class="hero-badge">Trusted by readers worldwide</div>
+      <h1>Make your money<br>work <em>harder</em><br>than you do</h1>
+      <p>Simple, powerful financial advice for everyday people. No jargon, no hidden agendas — just real strategies that build lasting wealth.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="showPage('articles',document.querySelectorAll('.nav-links a')[1])">📖 Read Articles</button>
+        <button class="btn-outline" onclick="showPage('tools',document.querySelectorAll('.nav-links a')[2])">🧮 Free Tools</button>
+      </div>
+    </div>
+    <div class="hero-card fade-up delay-2">
+      <div class="hero-card-title">📈 Market Snapshot</div>
+      <div class="ticker-row">
+        <div><div class="ticker-name">S&P 500</div><div class="ticker-sub">US Stocks</div></div>
+        <div style="text-align:right"><div class="ticker-val">5,840</div><span class="ticker-chg chg-up">+1.2%</span></div>
+      </div>
+      <div class="ticker-row">
+        <div><div class="ticker-name">Gold</div><div class="ticker-sub">Per oz</div></div>
+        <div style="text-align:right"><div class="ticker-val">$2,340</div><span class="ticker-chg chg-up">+0.8%</span></div>
+      </div>
+      <div class="ticker-row">
+        <div><div class="ticker-name">Bitcoin</div><div class="ticker-sub">Crypto</div></div>
+        <div style="text-align:right"><div class="ticker-val">$67,200</div><span class="ticker-chg chg-up">+3.4%</span></div>
+      </div>
+      <div class="ticker-row">
+        <div><div class="ticker-name">EUR/USD</div><div class="ticker-sub">Forex</div></div>
+        <div style="text-align:right"><div class="ticker-val">1.0842</div><span class="ticker-chg chg-dn">-0.2%</span></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">60+</div><div class="hero-stat-lbl">Articles</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">50K</div><div class="hero-stat-lbl">Readers</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-lbl">Free</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-bar">
+    <div class="trust-item">✅ No paid promotions</div>
+    <div class="trust-item">🔒 100% free forever</div>
+    <div class="trust-item">📅 Updated weekly</div>
+    <div class="trust-item">🌍 Global audience</div>
+    <div class="trust-item">🎓 Beginner friendly</div>
+  </div>
+
+  <section class="section section-alt">
+    <div class="section-label">Featured</div>
+    <div class="featured-card" onclick="openArticle('budget')">
+      <div>
+        <div class="featured-label">Editor's Pick This Week</div>
+        <h2>How to Save $500 Every Month — Even on a Tight Budget</h2>
+        <p>Most people think saving requires a high income. This guide shows you the exact system thousands use to save consistently — starting today, with whatever you earn.</p>
+        <br><button class="btn-gold" style="font-size:13px;padding:10px 22px">Read Article →</button>
+      </div>
+      <div class="featured-num">01</div>
+    </div>
+    <div class="section-title">Latest Articles</div>
+    <div class="articles-grid">
+      <div class="article-card" onclick="openArticle('budget')">
+        <div class="card-thumb thumb-budget">💰</div>
+        <div class="card-body"><span class="card-tag tag-b">Budgeting</span><div class="card-title">How to save $500 every month</div><div class="card-excerpt">Simple tricks to cut expenses without feeling restricted — works on any income.</div><div class="card-meta"><span>📖 5 min</span><span>📅 May 2026</span></div></div>
+      </div>
+      <div class="article-card" onclick="openArticle('invest')">
+        <div class="card-thumb thumb-invest">📈</div>
+        <div class="card-body"><span class="card-tag tag-i">Investing</span><div class="card-title">Investing for complete beginners — where to start</div><div class="card-excerpt">Stocks, index funds, gold, crypto — the honest beginner's guide to growing money.</div><div class="card-meta"><span>📖 7 min</span><span>📅 May 2026</span></div></div>
+      </div>
+      <div class="article-card" onclick="openArticle('sidehustle')">
+        <div class="card-thumb thumb-earn">💼</div>
+        <div class="card-body"><span class="card-tag tag-e">Side Income</span><div class="card-title">5 side hustles earning $1,000+/month from home</div><div class="card-excerpt">Real income streams anyone can start with zero investment this week.</div><div class="card-meta"><span>📖 6 min</span><span>📅 Apr 2026</span></div></div>
+      </div>
+      <div class="article-card" onclick="openArticle('emergency')">
+        <div class="card-thumb thumb-save">🏦</div>
+        <div class="card-body"><span class="card-tag tag-s">Saving</span><div class="card-title">Why you need an emergency fund right now</div><div class="card-excerpt">The one financial habit that protects everything else you have built.</div><div class="card-meta"><span>📖 4 min</span><span>📅 Apr 2026</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="section-label">Money Rules</div>
+    <div class="section-title">10 rules every wealthy person follows</div>
+    <div class="section-sub">Master these and you will be ahead of 90% of people financially — anywhere in the world.</div>
+    <div class="tips-grid">
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">01</div><div class="tip-title" style="color:#fff">Spend less than you earn</div><div class="tip-body">The foundation of all wealth. Simple but ignored by most.</div>
+      </div>
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">02</div><div class="tip-title" style="color:#fff">Pay yourself first</div><div class="tip-body">Save before you spend — automate it on every payday.</div>
+      </div>
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">03</div><div class="tip-title" style="color:#fff">Build an emergency fund</div><div class="tip-body">3 months of expenses. This buffer changes everything.</div>
+      </div>
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">04</div><div class="tip-title" style="color:#fff">Avoid bad debt</div><div class="tip-body">High-interest loans quietly steal your financial future.</div>
+      </div>
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">05</div><div class="tip-title" style="color:#fff">Invest early, not perfectly</div><div class="tip-body">Time in the market always beats waiting for the right moment.</div>
+      </div>
+      <div class="tip-card" style="background:rgba(255,255,255,0.04);border-color:rgba(201,168,76,0.15)">
+        <div class="tip-num">06</div><div class="tip-title" style="color:#fff">Diversify everything</div><div class="tip-body">Never put all your money in one place. Ever.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" style="text-align:center">
+    <div class="newsletter-wrap">
+      <div class="section-label">Free Newsletter</div>
+      <h2>Get smarter about money — every week</h2>
+      <p>Join 50,000+ readers worldwide receiving actionable finance tips, market updates, and wealth strategies.</p>
+      <div class="email-form">
+        <input type="email" placeholder="Enter your email address" />
+        <button onclick="this.textContent='Subscribed ✓'">Subscribe Free</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ARTICLES -->
+<div id="articles" class="page">
+  <div id="articles-list">
+    <section class="section section-dark" style="padding-bottom:40px">
+      <div class="section-label">All Articles</div>
+      <div class="section-title">Everything you need to know about money</div>
+      <div class="section-sub" style="margin-bottom:0">Practical, jargon-free guides for every stage of your financial journey.</div>
+    </section>
+    <section class="section section-alt">
+      <div class="articles-grid">
+        <div class="article-card" onclick="openArticle('budget')"><div class="card-thumb thumb-budget">💰</div><div class="card-body"><span class="card-tag tag-b">Budgeting</span><div class="card-title">How to save $500 every month</div><div class="card-excerpt">Simple tricks that work on any income level.</div><div class="card-meta"><span>📖 5 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('invest')"><div class="card-thumb thumb-invest">📈</div><div class="card-body"><span class="card-tag tag-i">Investing</span><div class="card-title">Investing for complete beginners</div><div class="card-excerpt">Stocks, index funds, gold — where to actually start.</div><div class="card-meta"><span>📖 7 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('sidehustle')"><div class="card-thumb thumb-earn">💼</div><div class="card-body"><span class="card-tag tag-e">Side Income</span><div class="card-title">5 side hustles earning $1,000+/month</div><div class="card-excerpt">Real income streams anyone can start from home.</div><div class="card-meta"><span>📖 6 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('emergency')"><div class="card-thumb thumb-save">🏦</div><div class="card-body"><span class="card-tag tag-s">Saving</span><div class="card-title">Why you need an emergency fund now</div><div class="card-excerpt">The habit that protects everything else you build.</div><div class="card-meta"><span>📖 4 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('debt')"><div class="card-thumb thumb-debt">⚠️</div><div class="card-body"><span class="card-tag tag-d">Debt</span><div class="card-title">How to get out of debt — the proven method</div><div class="card-excerpt">The avalanche method explained step by step.</div><div class="card-meta"><span>📖 5 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('makemoney')"><div class="card-thumb thumb-earn">💻</div><div class="card-body"><span class="card-tag tag-e">Side Income</span><div class="card-title">How to make money online — 10 proven ways</div><div class="card-excerpt">Real methods anyone can use to earn $1,000+/month from home.</div><div class="card-meta"><span>📖 8 min</span></div></div></div>
+        <div class="article-card" onclick="openArticle('compound')"><div class="card-thumb thumb-tax">🔢</div><div class="card-body"><span class="card-tag tag-t">Growth</span><div class="card-title">Compound interest — the secret to real wealth</div><div class="card-excerpt">Why starting early is worth more than saving more.</div><div class="card-meta"><span>📖 5 min</span></div></div></div>
+      </div>
+    </section>
+  </div>
+  <div id="article-detail" style="display:none">
+    <div class="article-detail-wrap">
+      <button class="back-link" onclick="closeArticle()">← Back to Articles</button>
+      <div id="article-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div id="tools" class="page">
+  <section class="section section-dark" style="padding-bottom:40px">
+    <div class="section-label">Free Tools</div>
+    <div class="section-title">Calculators & planners</div>
+    <div class="section-sub" style="margin-bottom:0">Use these free tools to take control of your financial future.</div>
+  </section>
+  <section class="section section-alt">
+    <div class="calc-wrap">
+      <div class="calc-box">
+        <h3>💰 Savings Growth Calculator</h3>
+        <div class="calc-field"><label>Monthly savings <strong id="monthly-val">$500</strong></label><input type="range" min="50" max="5000" step="50" value="500" id="monthly" oninput="calc()"></div>
+        <div class="calc-field"><label>Years <strong id="years-val">10 years</strong></label><input type="range" min="1" max="40" step="1" value="10" id="years" oninput="calc()"></div>
+        <div class="calc-field"><label>Annual return <strong id="rate-val">8%</strong></label><input type="range" min="1" max="20" step="1" value="8" id="rate" oninput="calc()"></div>
+        <div class="result-box">
+          <div class="result-label">You will have</div>
+          <div class="result-num" id="result">$91,473</div>
+          <div class="result-sub" id="result-sub">Total invested: $60,000</div>
+        </div>
+      </div>
+      <div class="calc-info">
+        <div class="section-label" style="color:var(--gold)">Why this matters</div>
+        <h3>Small amounts grow into life-changing wealth</h3>
+        <p>Consistency beats big amounts. $500/month for 20 years at 8% turns into over $294,000 — even though you only deposited $120,000. That is the power of compound growth.</p>
+        <div class="info-stat"><span class="info-stat-lbl">Start at 25 vs 35</span><span class="info-stat-val">2× more wealth</span></div>
+        <div class="info-stat"><span class="info-stat-lbl">S&P 500 avg annual return</span><span class="info-stat-val">~10% / year</span></div>
+        <div class="info-stat"><span class="info-stat-lbl">Minimum to start investing</span><span class="info-stat-val">$1 (many apps)</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="section-label">Budget Planner</div>
+    <div class="section-title">The 50 / 30 / 20 rule</div>
+    <div class="section-sub">Enter your monthly income and see exactly how to allocate it.</div>
+    <div style="max-width:460px">
+      <div class="form-group">
+        <label>Your monthly income ($)</label>
+        <input type="number" id="income-input" placeholder="e.g. 3000" oninput="budgetCalc()" style="padding:12px 16px;border:1.5px solid rgba(13,27,42,0.1);border-radius:10px;font-size:16px;font-family:var(--font-body);width:100%;outline:none;background:var(--white)">
+      </div>
+      <div class="tips-grid" style="margin-top:20px">
+        <div class="tip-card"><div class="tip-num" style="color:#1a5f8a;opacity:1">50%</div><div class="tip-title">Needs</div><div class="tip-body">Rent, food, bills, transport</div><div id="b-needs" style="font-size:20px;font-weight:600;margin-top:10px;color:var(--navy)">—</div></div>
+        <div class="tip-card"><div class="tip-num" style="color:#1a7a45;opacity:1">30%</div><div class="tip-title">Wants</div><div class="tip-body">Dining, shopping, fun</div><div id="b-wants" style="font-size:20px;font-weight:600;margin-top:10px;color:var(--navy)">—</div></div>
+        <div class="tip-card"><div class="tip-num" style="color:var(--gold-dark);opacity:1">20%</div><div class="tip-title">Savings</div><div class="tip-body">Emergency fund + invest</div><div id="b-save" style="font-size:20px;font-weight:600;margin-top:10px;color:var(--navy)">—</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="page">
+  <section class="about-hero">
+    <div>
+      <div class="section-label" style="color:var(--gold)">Our Story</div>
+      <h1>Built for <span>real people</span> with real money problems</h1>
+      <p>WealthWise was created with one mission: make smart financial advice available to everyone — not just the wealthy. No expensive courses, no confusing jargon. Just honest, practical, free guidance for anyone who wants to build a better financial future.</p>
+    </div>
+    <div class="about-values">
+      <div class="value-card"><div class="value-icon">🎯</div><div class="value-title">Our Mission</div><div class="value-text">Make financial literacy free and accessible for everyone, everywhere.</div></div>
+      <div class="value-card"><div class="value-icon">💎</div><div class="value-title">Our Values</div><div class="value-text">Honesty first. We never promote anything we wouldn't use ourselves.</div></div>
+      <div class="value-card"><div class="value-icon">📚</div><div class="value-title">Our Content</div><div class="value-text">Researched, practical, and written for beginners — not finance experts.</div></div>
+      <div class="value-card"><div class="value-icon">🌍</div><div class="value-title">Our Reach</div><div class="value-text">Helping readers in over 80 countries improve their finances.</div></div>
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="section-label">The Team</div>
+    <div class="section-title">Written by real people</div>
+    <div class="section-sub">Our writers are finance enthusiasts, not Wall Street insiders — which is exactly why our advice is practical and honest.</div>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar" style="background:linear-gradient(135deg,#1A2E45,#C9A84C)">JM</div><div class="team-name">James Miller</div><div class="team-role">Founder & Finance Writer</div></div>
+      <div class="team-card"><div class="team-avatar" style="background:linear-gradient(135deg,#143d2c,#2ECC8A)">SC</div><div class="team-name">Sarah Chen</div><div class="team-role">Investing & Budgeting</div></div>
+      <div class="team-card"><div class="team-avatar" style="background:linear-gradient(135deg,#2d2050,#C9A84C)">RA</div><div class="team-name">Ryan Adams</div><div class="team-role">Side Income & Business</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page">
+  <section class="section section-alt">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Get In Touch</div>
+        <h2>We'd love to hear from you</h2>
+        <p>Have a question, topic idea, or want to collaborate? Send us a message and we will reply within 24 hours.</p>
+        <div class="contact-item"><div class="contact-item-icon">📧</div><div><div class="contact-item-label">Email</div><div class="contact-item-val">hello@wealthwise.com</div></div></div>
+        <div class="contact-item"><div class="contact-item-icon">🌍</div><div><div class="contact-item-label">Serving</div><div class="contact-item-val">Readers worldwide</div></div></div>
+        <div class="contact-item"><div class="contact-item-icon">📅</div><div><div class="contact-item-label">Response time</div><div class="contact-item-val">Within 24 hours</div></div></div>
+      </div>
+      <div class="contact-form-box">
+        <h3>Send a message</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First name</label><input type="text" placeholder="John"></div>
+          <div class="form-group"><label>Last name</label><input type="text" placeholder="Smith"></div>
+        </div>
+        <div class="form-group"><label>Email address</label><input type="email" placeholder="you@email.com"></div>
+        <div class="form-group"><label>Topic</label>
+          <select><option>General question</option><option>Article suggestion</option><option>Partnership</option><option>Feedback</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Write your message here..."></textarea></div>
+        <button class="submit-btn" onclick="this.textContent='Message Sent! We\'ll reply soon ✓'">Send Message</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="font-family:var(--font-display);font-size:20px;color:var(--white);display:flex;align-items:center;gap:10px;margin-bottom:12px"><div class="logo-icon">💰</div>Wealth<span style="color:var(--gold)">Wise</span></div>
+      <p>Free personal finance advice for everyone. Simple, honest money guidance — no jargon, no hidden agenda.</p>
+    </div>
+    <div class="footer-col"><h4>Articles</h4><a onclick="openArticle('budget')">Budgeting</a><a onclick="openArticle('invest')">Investing</a><a onclick="openArticle('sidehustle')">Side Income</a><a onclick="openArticle('emergency')">Saving</a></div>
+    <div class="footer-col"><h4>Tools</h4><a onclick="showPage('tools',document.querySelectorAll('.nav-links a')[2])">Savings Calculator</a><a onclick="showPage('tools',document.querySelectorAll('.nav-links a')[2])">Budget Planner</a></div>
+    <div class="footer-col"><h4>Company</h4><a onclick="showPage('about',document.querySelectorAll('.nav-links a')[3])">About Us</a><a onclick="showPage('contact',document.querySelectorAll('.nav-links a')[4])">Contact</a><a>Privacy Policy</a><a>Disclaimer</a></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 WealthWise · Free finance for everyone, everywhere</span>
+    <div class="footer-social"><div class="social-btn">📘</div><div class="social-btn">📸</div><div class="social-btn">🐦</div><div class="social-btn">▶️</div></div>
+  </div>
+</footer>
+
+<script>
+const ARTICLES = {
+  budget:{tag:'Budgeting',tagClass:'tag-b',title:'How to Save $500 Every Month — Even on a Tight Budget',date:'May 2026',read:'5 min read',body:`<p>Most people believe saving requires a high income. This is the single biggest financial myth. Saving is a habit — not a luxury — and it can start today, regardless of what you earn.</p><div class="article-highlight"><p>💡 The secret: automate your savings before you have a chance to spend the money.</p></div><h3>Step 1 — Know exactly where your money goes</h3><p>For one week, write down every single expense. Coffee, transport, subscriptions — everything. Most people discover they are spending hundreds of dollars on things they barely remember buying.</p><h3>Step 2 — Cut the 3 biggest money leaks</h3><ul><li>Subscriptions you forgot you have</li><li>Eating out more than 3 times per week</li><li>Impulse purchases when bored or stressed</li></ul><h3>Step 3 — Use the 24-hour rule</h3><p>Before buying anything over $50, wait 24 hours. You will cancel most of those purchases — and save that money instead.</p><h3>Step 4 — Automate on payday</h3><p>The moment your income arrives, transfer your savings target to a separate account. Treat it exactly like rent — non-negotiable. What you do not see, you do not spend.</p><div class="article-highlight"><p>🎯 Even $200/month saved consistently for 10 years at 8% return grows to over $36,000 — almost double what you deposited.</p></div>`},
+  invest:{tag:'Investing',tagClass:'tag-i',title:'Investing for Complete Beginners — Where to Actually Start',date:'May 2026',read:'7 min read',body:`<p>You do not need to be wealthy to invest. You do not need to understand complex financial instruments. You just need to start — and this guide shows you exactly how.</p><h3>Option 1 — Index Funds (Best for most people)</h3><p>An index fund tracks the whole stock market automatically. You get instant diversification with no stock-picking required. The S&P 500 index has averaged around 10% annually for decades. Start with as little as $1 on platforms like Fidelity, Vanguard, or eToro.</p><h3>Option 2 — Stocks</h3><p>Buying individual company shares can generate higher returns — but also higher risk. Start with well-known, stable companies and never invest money you cannot afford to lose.</p><div class="article-highlight"><p>💡 For most beginners, a simple global index fund is the smartest, easiest, and most proven starting point.</p></div><h3>Option 3 — Gold</h3><p>Gold has preserved value for centuries. It protects against inflation and currency weakness. Allocate 5–15% of your portfolio as a long-term hedge.</p><h3>The golden rule</h3><p>Start now, even with a tiny amount. Time in the market always beats timing the market. Someone investing $200/month from age 25 will have dramatically more wealth at 55 than someone investing $1,000/month starting at 40.</p>`},
+  sidehustle:{tag:'Side Income',tagClass:'tag-e',title:'5 Side Hustles Earning $1,000+/Month From Home',date:'April 2026',read:'6 min read',body:`<p>You do not need a second job to earn more money. These are real income streams anyone can start this week — with zero startup cost.</p><h3>1. Freelancing (highest potential)</h3><p>Skills like graphic design, writing, video editing, web development, and social media management are in massive demand globally. Start on Fiverr or Upwork. Many freelancers earn $500–$5,000/month within 6 months.</p><h3>2. Online tutoring</h3><p>If you are good at any subject — math, languages, music, coding — you can earn $20–$80/hour teaching students online through platforms like Preply, Wyzant, or directly via Zoom.</p><h3>3. Selling digital products</h3><p>Create a template, guide, course, or design once — sell it thousands of times. Platforms like Gumroad or Etsy make this simple. One good digital product can generate passive income for years.</p><div class="article-highlight"><p>🚀 Freelancing in a global marketplace means you earn in strong currencies regardless of where you live — a massive advantage.</p></div><h3>4. Content creation</h3><p>YouTube, blogging, newsletters — content creators with 10,000 engaged followers can earn $500–$5,000/month through ads, sponsorships, and affiliate links.</p><h3>5. Affiliate marketing</h3><p>Recommend products you genuinely like and earn a commission every time someone buys through your link. Finance, tech, and health niches pay the highest commissions — $20–$200 per sale.</p>`},
+  emergency:{tag:'Saving',tagClass:'tag-s',title:'Why You Need an Emergency Fund Right Now',date:'April 2026',read:'4 min read',body:`<p>An emergency fund is money set aside for the unexpected. Job loss. Medical bills. Car breakdown. Without it, these events become financial disasters that can take years to recover from. With it, they are just problems you solve and move on from.</p><h3>How much do you need?</h3><p>Aim for 3 to 6 months of your basic living expenses. If you spend $2,000/month on essentials, target $6,000–$12,000 in your emergency fund. This sounds like a lot — but broken into small weekly deposits, most people reach it within 12–18 months.</p><h3>Where to keep it</h3><ul><li>A separate high-yield savings account — not your main account</li><li>Accessible within 1–2 days if needed</li><li>Not invested in stocks — stability matters more than growth here</li></ul><div class="article-highlight"><p>⚠️ Without an emergency fund, one bad month can destroy years of financial progress. This is the most important step you can take before investing anything.</p></div><h3>How to build it fast</h3><p>Start with a micro-goal: $500. Then $1,000. Then 1 month of expenses. Save even $50/week and in one year you will have over $2,500 — enough to handle most common emergencies without going into debt.</p>`},
+  debt:{tag:'Debt',tagClass:'tag-d',title:'How to Get Out of Debt Faster — The Proven Avalanche Method',date:'March 2026',read:'5 min read',body:`<p>Debt is one of the biggest obstacles to building wealth. The good news: there is a proven, mathematically optimal method to eliminate it as fast as possible — and it is simple to follow.</p><h3>The Avalanche Method</h3><p>List all your debts from the highest interest rate to the lowest. Pay the minimum on all of them — but send every extra dollar you can at the highest-interest debt first. When that is paid off, attack the next one with the same intensity.</p><ul><li>Step 1: List all debts with their interest rates</li><li>Step 2: Pay minimum on every debt</li><li>Step 3: Put all extra money on the highest-rate debt</li><li>Step 4: When paid off, roll that payment into the next debt</li></ul><div class="article-highlight"><p>💡 The avalanche method saves the most money in interest — often thousands of dollars compared to paying debts randomly or smallest-first.</p></div><h3>While paying off debt</h3><p>Stop accumulating new debt. Cut every optional expense you can. Find any side income you can generate — even an extra $200/month accelerates debt payoff dramatically. Credit card debt above all else should be your first target — interest rates of 20–30% make it impossible to build wealth while carrying a balance.</p>`},
+  makemoney:{tag:'Side Income',tagClass:'tag-e',title:'How to Make Money Online in 2026 — 10 Proven Ways',date:'May 2026',read:'8 min read',body:`<p>Making money online is no longer a dream — it is a reality for millions of people worldwide. In 2026, the internet offers more legitimate income opportunities than ever before.</p><div class="article-highlight"><p>💡 There is no get rich quick online. Every method here requires real work — but with consistency, real income follows. Most people start seeing results within 2–3 months.</p></div><h3>1. Freelancing — Fastest Way to Start</h3><p>Sell your skills to clients worldwide. Writing, design, coding, video editing — almost any skill can be freelanced. Create a profile on Fiverr or Upwork, list your service, deliver great work, collect reviews, raise your prices. Earn $500–$5,000/month.</p><h3>2. Blogging — Long Term Passive Income</h3><p>Start a blog about a topic you know — finance, health, travel. Write helpful articles, grow traffic through Google, and earn through ads and affiliate links. Earn $1,000–$20,000/month with consistency.</p><h3>3. Affiliate Marketing — Earn While You Sleep</h3><p>Recommend products and earn a commission every time someone buys through your link. Finance and software products pay $50–$500 per sale. Join Amazon Associates, ShareASale, or ClickBank.</p><h3>4. YouTube Channel</h3><p>Create videos about any topic you are passionate about. Once you reach 1,000 subscribers and 4,000 watch hours, monetize with ads. Finance channels earn the most per view — $500–$50,000/month.</p><h3>5. Selling Digital Products</h3><p>Create an ebook, template, or course once — sell it thousands of times. Sell on Gumroad or Etsy for $5–$50 each. Pure passive income once created.</p><h3>6. Online Tutoring</h3><p>Teach any subject online — math, languages, coding, music. Earn $20–$80 per hour on platforms like Preply or Wyzant. One of the fastest ways to start earning.</p><h3>7. Social Media Management</h3><p>Help small businesses with Instagram and Facebook. Charge $200–$1,000 per client per month. Manage 3–5 clients working just 2 hours a day.</p><h3>8. Dropshipping</h3><p>Sell products online without holding stock. When a customer orders, your supplier ships directly. Create a Shopify store, find products on AliExpress, run ads. Earn $500–$30,000/month.</p><h3>9. Stock Photos and Videos</h3><p>Upload photos and videos to Shutterstock or Adobe Stock and earn royalties every download. One great photo can earn money for years. Aim for 500+ images for consistent income.</p><h3>10. Investing and Dividends</h3><p>Invest in dividend stocks and earn regular payouts without doing anything. Start small, reinvest everything, and let compound interest build your passive income over time.</p><div class="article-highlight"><p>🎯 Best advice: Pick ONE method and focus on it for 90 days. Most people fail because they jump between methods. Consistency is the real secret to making money online.</p></div>`},
+  compound:{tag:'Growth',tagClass:'tag-t',title:'Compound Interest — The Secret to Real Wealth',date:'March 2026',read:'5 min read',body:`<p>Albert Einstein reportedly called compound interest the eighth wonder of the world. Whether he said it or not, the math is undeniably extraordinary — and it works for anyone who starts early enough.</p><h3>What is compound interest?</h3><p>Simple interest earns you money on your original deposit. Compound interest earns you money on your original deposit AND on every dollar of growth you have already accumulated. Over decades, this creates exponential — not linear — growth.</p><div class="article-highlight"><p>📊 $10,000 invested at 10% annually for 30 years becomes $174,494. You invested $10,000 and gained $164,000 — without adding a single dollar more.</p></div><h3>Why starting early matters more than saving more</h3><ul><li>Invest $300/month from age 25 → approximately $1.1M by age 65</li><li>Invest $600/month from age 35 → approximately $680K by age 65</li><li>Double the monthly amount — but 10 years later — gives you 38% less wealth.</li></ul><h3>How to harness it</h3><p>Invest in assets that generate compound returns — index funds, dividend stocks, or interest-bearing accounts. Reinvest all earnings. Never withdraw early. Give it time. The longer you leave compound interest to work, the more violently it accelerates in your favor. The best time to start was 10 years ago. The second best time is today.</p>`}
+};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function openArticle(key) {
+  const a = ARTICLES[key]; if (!a) return;
+  const listEl = document.getElementById('articles-list');
+  const detailEl = document.getElementById('article-detail');
+  if (listEl) listEl.style.display = 'none';
+  if (detailEl) detailEl.style.display = 'block';
+  document.getElementById('article-content').innerHTML = `<span class="article-detail-tag ${a.tagClass}">${a.tag}</span><div class="detail-h1">${a.title}</div><div class="detail-meta"><span>📅 ${a.date}</span><span>📖 ${a.read}</span><span>✍️ WealthWise Team</span></div><div class="article-body">${a.body}</div>`;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('articles').classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach((a,i) => a.classList.toggle('active', i===1));
+  window.scrollTo(0,0);
+}
+
+function closeArticle() {
+  document.getElementById('articles-list').style.display = 'block';
+  document.getElementById('article-detail').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+function calc() {
+  const m = parseInt(document.getElementById('monthly').value);
+  const y = parseInt(document.getElementById('years').value);
+  const r = parseInt(document.getElementById('rate').value) / 100 / 12;
+  const n = y * 12;
+  const total = r > 0 ? m * ((Math.pow(1+r,n)-1)/r) : m*n;
+  const invested = m * n;
+  document.getElementById('monthly-val').textContent = '$' + m.toLocaleString();
+  document.getElementById('years-val').textContent = y + ' years';
+  document.getElementById('rate-val').textContent = document.getElementById('rate').value + '%';
+  document.getElementById('result').textContent = '$' + Math.round(total).toLocaleString();
+  document.getElementById('result-sub').textContent = 'Total invested: $' + Math.round(invested).toLocaleString();
+}
+
+function budgetCalc() {
+  const inc = parseFloat(document.getElementById('income-input').value) || 0;
+  document.getElementById('b-needs').textContent = inc ? '$' + Math.round(inc*0.5).toLocaleString() : '—';
+  document.getElementById('b-wants').textContent = inc ? '$' + Math.round(inc*0.3).toLocaleString() : '—';
+  document.getElementById('b-save').textContent  = inc ? '$' + Math.round(inc*0.2).toLocaleString() : '—';
+}
+</script>
+</body>
+</html>
